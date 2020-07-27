@@ -13,4 +13,9 @@ export const FooterBase = styled.footer`
   @media (max-width: 800px) {
     margin-bottom: 50px;
   }
-`;
+`
+
+export const ImgLogo = styled.div`
+  display:contents;
+
+`
