@@ -10,6 +10,20 @@ export default function CadastroCategoria() {
 					Cadastro Categoria
 			</h1>
 
+				<form>
+
+					<label>
+						Nome da Categoria:
+	<input
+							type="text"
+						/>
+					</label>
+
+					<button>
+						Cadastrar
+</button>
+				</form>
+
 				<Link to="/">
 					Ir para Home
 			</Link>
