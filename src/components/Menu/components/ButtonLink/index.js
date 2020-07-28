@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 
-const ButtonLink = (props) => {
+export default function index(props) {
 	return (
 		<>
-			<a className={props.className} href={props.href}>
-				{props.children}
-			</a>
+			<>
+				<a className={props.className} href={props.href}>
+					{props.children}
+				</a>
+			</>
 		</>
-	);
+	)
 }
-
-export default ButtonLink;
