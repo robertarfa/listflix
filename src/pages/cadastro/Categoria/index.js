@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import { Link } from 'react-router-dom'
-import { FormField, FormFieldTextArea } from '../../../components/FormField'
+import { FormField } from '../../../components/FormField'
 import PageDefault from '../../../components/PageDefault'
 import { Main, PageTitle, Button, ButtonContainer } from './styles'
 
@@ -31,6 +31,21 @@ export default function CadastroCategoria() {
 		)
 	}
 
+	useEffect(() => {
+		if (window.location.href.includes('localhost')) {
+			const URL = 'http://localhost:8080/categorias';
+			fetch(URL)
+				.then(async (respostaDoServer) => {
+					if (respostaDoServer.ok) {
+						const resposta = await respostaDoServer.json();
+						setCategories(resposta);
+						return;
+					}
+					throw new Error('Não foi possível pegar os dados');
+				})
+		}
+	}, []);
+
 	return (
 		<>
 
@@ -46,6 +61,7 @@ export default function CadastroCategoria() {
 						</h3>
 					</PageTitle>
 
+
 					<form onSubmit={function handleSubmit(e) {
 						e.preventDefault()
 						setCategories([
@@ -56,24 +72,23 @@ export default function CadastroCategoria() {
 					}}>
 
 						<FormField
-							label="Nome da Categoria: "
+							label="Nome da Categoria"
 							type="text"
 							name="name"
 							value={values.name}
 							onChange={handleInputChange}
 						/>
 
-						<FormFieldTextArea
-							label="Descrição: "
-							type="text"
+						<FormField
+							label="Descrição"
+							type="textarea"
 							name="description"
 							value={values.description}
 							onChange={handleInputChange}
-							rows={10}
 						/>
 
 						<FormField
-							label="Cor: "
+							label="Cor"
 							type="color"
 							name="color"
 							value={values.color}
@@ -86,6 +101,7 @@ export default function CadastroCategoria() {
 					</Button>
 						</ButtonContainer>
 					</form>
+
 
 					<div>
 						<ul>

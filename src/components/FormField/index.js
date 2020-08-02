@@ -1,25 +1,30 @@
 import React from 'react'
-import { Field, Row } from './styles.js'
+import { Field, Row, Input, Label, } from './styles.js'
+import PropTypes from 'prop-types';
 
 function FormField({ label, name, type, value, onChange }) {
+
+  // const fieldId = `id_${name}`
+  const tag = type === 'textarea' ? 'textarea' : 'input'
+
   return (
     <>
       <Field>
-
-
         <Row>
-          <label>
-            {label}
-          </label>
-        </Row>
+          <Label>
+            <Input
+              as={tag}
+              name={name}
+              type={type}
+              value={value}
+              onChange={onChange}
+            />
 
-        <Row>
-          <input
-            name={name}
-            type={type}
-            value={value}
-            onChange={onChange}
-          />
+            <Label.Text >
+              {label}:
+            </Label.Text>
+
+          </Label>
         </Row>
 
       </Field>
@@ -27,31 +32,59 @@ function FormField({ label, name, type, value, onChange }) {
   )
 }
 
-function FormFieldTextArea({ rows, label, name, type, value, onChange }) {
-  return (
-    <>
-      <Field>
+// function FormFieldTextArea({ rows, label, name, type, value, onChange }) {
+//   return (
+//     <>
+//       <Field>
 
 
-        <Row>
-          <label>
-            {label}
-          </label>
-        </Row>
+//         <Row>
+//           <label>
+//             {label}
+//           </label>
+//         </Row>
 
-        <Row>
-          <textarea
-            name={name}
-            type={type}
-            value={value}
-            onChange={onChange}
-            rows={rows}
-          />
-        </Row>
+//         <Row>
+//           <textarea
+//             name={name}
+//             type={type}
+//             value={value}
+//             onChange={onChange}
+//             rows={rows}
+//           />
+//         </Row>
 
-      </Field>
-    </>
-  )
+//       </Field>
+//     </>
+//   )
+// }
+
+FormField.defaultProps = {
+  type: 'text',
+  value: '',
+  onChange: () => { },
 }
 
-export { FormField, FormFieldTextArea }
+FormField.protoTypes = {
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+}
+
+// FormFieldTextArea.defaultProps = {
+//   type: 'text',
+//   value: '',
+//   onChange: () => { },
+// }
+
+// FormFieldTextArea.protoTypes = {
+//   label: PropTypes.string.isRequired,
+//   type: PropTypes.string,
+//   name: PropTypes.string.isRequired,
+//   value: PropTypes.string,
+//   onChange: PropTypes.func,
+// }
+
+export { FormField }
