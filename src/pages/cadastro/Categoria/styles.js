@@ -11,15 +11,9 @@ text-align: center;
 
 export const ButtonContainer = styled.div`
 width: 100%;
-position: absolute;
-margin-top: 5px;
 margin-left: auto;
 margin-right: auto;
-left: 0;
-right: 0;
 text-align: center;
-
-
 `
 
 export const Button = styled.button`

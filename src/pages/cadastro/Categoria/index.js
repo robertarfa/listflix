@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 // import { Link } from 'react-router-dom'
 import { FormField } from '../../../components/FormField'
 import PageDefault from '../../../components/PageDefault'
-import { Main, PageTitle, Button, ButtonContainer } from './styles'
+import { Main, PageTitle, ButtonContainer } from './styles'
+import Button from '../../../components/Button'
 
 export default function CadastroCategoria() {
 
@@ -96,19 +97,24 @@ export default function CadastroCategoria() {
 						/>
 
 						<ButtonContainer>
-							<Button>
+							<Button type="submit">
 								Cadastrar
 					</Button>
 						</ButtonContainer>
 					</form>
 
+					{categories.length === 0 && (
+						<div>
+							Loading...
+						</div>
+					)}
 
 					<div>
 						<ul>
-							{categories.map((categoria) => {
+							{categories.map((categorie) => {
 								return (
-									<li key={categoria}>
-										{categoria.name}
+									<li key={`${categorie.id}`}>
+										{categorie.nome}
 									</li>
 								)
 							})}
