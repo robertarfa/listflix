@@ -1,135 +1,119 @@
-import React, { useState, useEffect } from 'react'
-// import { Link } from 'react-router-dom'
-import { FormField } from '../../../components/FormField'
-import PageDefault from '../../../components/PageDefault'
-import { Main, PageTitle, ButtonContainer } from './styles'
-import Button from '../../../components/Button'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import PageDefault from '../../../components/PageDefault';
+import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
+import useForm from '../../../hooks/useForm';
 
-export default function CadastroCategoria() {
+function CadastroCategoria() {
+  const valoresIniciais = {
+    nome: '',
+    descricao: '',
+    cor: '',
+  };
 
-	const initialValues = {
-		name: '',
-		description: '',
-		color: ''
-	}
+  const { handleChange, values, clearForm } = useForm(valoresIniciais);
 
-	const [values, setValues] = useState(initialValues)
-	const [categories, setCategories] = useState([])
+  const [categorias, setCategorias] = useState([]);
 
-	function setValue(key, value) {
-		setValues({
-			...values,
-			[key]: value
-			//[key] vai pegar o valor que foi passado
-			//nome: value, descrição: value
-		})
-	}
+  useEffect(() => {
+    const URL_TOP = window.location.hostname.includes('localhost')
+      ? 'http://localhost:8080/categorias'
+      : 'https://devsoutinhoflix.herokuapp.com/categorias';
+    // E a ju ama variáveis
+    fetch(URL_TOP)
+      .then(async (respostaDoServidor) => {
+        const resposta = await respostaDoServidor.json();
+        setCategorias([
+          ...resposta,
+        ]);
+      });
 
-	function handleInputChange(e) {
-		setValue(
-			e.target.getAttribute('name'),
-			e.target.value
-		)
-	}
+    // setTimeout(() => {
+    //   setCategorias([
+    //     ...categorias,
+    //     {
+    //       id: 1,
+    //       nome: 'Front End',
+    //       descricao: 'Uma categoria bacanudassa',
+    //       cor: '#cbd1ff',
+    //     },
+    //     {
+    //       id: 2,
+    //       nome: 'Back End',
+    //       descricao: 'Outra categoria bacanudassa',
+    //       cor: '#cbd1ff',
+    //     },
+    //   ]);
+    // }, 4 * 1000);
+  }, []);
 
-	useEffect(() => {
-		if (window.location.href.includes('localhost')) {
-			const URL = 'https://devlistflix.herokuapp.com/';
-			fetch(URL)
-				.then(async (respostaDoServer) => {
-					if (respostaDoServer.ok) {
-						const resposta = await respostaDoServer.json();
-						setCategories(resposta);
-						return;
-					}
-					throw new Error('Não foi possível pegar os dados');
-				})
-		}
-	}, []);
+  return (
+    <PageDefault>
+      <h1>
+        Cadastro de Categoria:
+        {values.nome}
+      </h1>
 
-	return (
-		<>
+      <form onSubmit={function handleSubmit(infosDoEvento) {
+        infosDoEvento.preventDefault();
+        setCategorias([
+          ...categorias,
+          values,
+        ]);
 
-			<PageDefault>
-				<Main>
+        clearForm();
+      }}
+      >
 
-					<PageTitle>
-						<h1>
-							Cadastro Categoria
-					</h1>
-						<h3>
-							{values.name}
-						</h3>
-					</PageTitle>
+        <FormField
+          label="Nome da Categoria"
+          name="nome"
+          value={values.nome}
+          onChange={handleChange}
+        />
 
+        <FormField
+          label="Descrição"
+          type="textarea"
+          name="descricao"
+          value={values.descricao}
+          onChange={handleChange}
+        />
 
-					<form onSubmit={function handleSubmit(e) {
-						e.preventDefault()
-						setCategories([
-							...categories,
-							values
-						])
-						setValues(initialValues)
-					}}>
+        <FormField
+          label="Cor"
+          type="color"
+          name="cor"
+          value={values.cor}
+          onChange={handleChange}
+        />
 
-						<FormField
-							label="Nome da Categoria"
-							type="text"
-							name="name"
-							value={values.name}
-							onChange={handleInputChange}
-						/>
+        <Button>
+          Cadastrar
+        </Button>
+      </form>
 
-						<FormField
-							label="Descrição"
-							type="textarea"
-							name="description"
-							value={values.description}
-							onChange={handleInputChange}
-						/>
+      {categorias.length === 0 && (
+        <div>
+          {/* Cargando... */}
+          Loading...
+        </div>
+      )}
 
-						<FormField
-							label="Cor"
-							type="color"
-							name="color"
-							value={values.color}
-							onChange={handleInputChange}
-						/>
+      <ul>
+        {categorias.map((categoria) => (
+          <li key={`${categoria.titulo}`}>
+            {categoria.titulo}
+          </li>
+        ))}
+      </ul>
 
-						<ButtonContainer>
-							<Button type="submit">
-								Cadastrar
-					</Button>
-						</ButtonContainer>
-					</form>
-
-					{categories.length === 0 && (
-						<div>
-							Loading...
-						</div>
-					)}
-
-					<div>
-						<ul>
-							{categories.map((categorie) => {
-								return (
-									<li key={`${categorie.id}`}>
-										{categorie.nome}
-									</li>
-								)
-							})}
-						</ul>
-					</div>
-
-				</Main>
-
-
-
-				{/* <Link to="/">
-						Ir para Home
-				</Link> */}
-			</PageDefault>
-
-		</>
-	)
+      <Link to="/">
+        Ir para home
+      </Link>
+    </PageDefault>
+  );
 }
+
+export default CadastroCategoria;
